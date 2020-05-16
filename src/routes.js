@@ -46,7 +46,6 @@ const Translate_web = React.lazy(() => import('./views/Translate/Translate_web')
 const Data_contribute = React.lazy(() => import('./views/Contribute/Contribute'));
 const Free = React.lazy(() => import('./views/Community/Free/Free'));
 const FreeBBS = React.lazy(() => import('./views/Community/Free/FreeBBS'));
-const Notice = React.lazy(() => import('./views/Game/Notice/Notice'));
 const Write = React.lazy(() => import('./views/Community/Write'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -60,7 +59,6 @@ const routes = [
   { path: '/community/free', exact: true, name: 'Free', component: Free },
   { path: '/community/free:id', exact: true, name: 'Free', component: Free },
   { path: '/community/free/:id', exact: true, name: 'Free Details', component: FreeBBS },
-  { path: '/game/notice', exact: true, name: 'Notice', component: Notice },
   { path: '/community/write', exact: true, name: 'Write', component: Write },
   
   // Core UI
