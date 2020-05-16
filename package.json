@@ -57,6 +57,7 @@
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
   },
+  "proxy":"https://openapi.naver.com",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
