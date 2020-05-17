@@ -21,7 +21,7 @@ export default {
       icon: 'icon-note',
       children: [
         {
-          name: '자유게시판',
+          name: '게시판',
           url: '/community/free',
           icon: 'icon-pencil',
         },
