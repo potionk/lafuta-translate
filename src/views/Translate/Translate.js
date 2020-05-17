@@ -12,6 +12,7 @@ class Translate extends Component {
       korean_text: "",
       p_translated_text: "",
       g_translated_text: "",
+      k_translated_text: "",
       able_submit: false
     };
     this.handleClick = this.handleClick.bind(this);
@@ -31,6 +32,7 @@ class Translate extends Component {
     });
     this.papago_translate();
     this.google_translate();
+    this.kakao_translate();
   };
 
   handleSubmit = (e) => {
@@ -66,7 +68,7 @@ class Translate extends Component {
   google_translate = async () => {
     const headers = {
       'Content-type': 'application/json',
-      'Authorization': 'Bearer ya29.c.Ko8BywfnXDO9KrChTolHstctGk4PHckhxDxYLl1y23Yd4ey9SHX6XgAs9oGeam_vO-ZIjcx3Bhsmaf_ylYnyE3Xaf1Li2CpCQ3A1uglIZ0_3Px5aFuePgrVISh7Nn736YrZ5EHXMSrABGUTBfCy60xviV2Pam9Vh0Edm80AeGv7WDKbWpNcvThV6Vr6IVW0imtQ',
+      'Authorization': 'Bearer ya29.c.Ko8ByweLvXJ8A2LUmDLjBjolE2_66tf0KR0COfvGtV-Ux1uEvY8BIohIm-eKnN5hY7dgmUeLZDrS67xM7XAc0BlxKuHynktbjAYqV9zKUr9g4pcFOWylvxXUi3d0Nea_1oPlIzf6sZOwArJbI_kvB79Bp4SPm9CwzidxfWWQ_87mNcVQ0E25wBG-rwesVo6m_Ss',
     }
     let param = {
       source: 'ko',
@@ -80,6 +82,31 @@ class Translate extends Component {
         let english_text = res.data;
         this.setState({
           g_translated_text: english_text.data.translations[0].translatedText,
+        });
+      }).catch(error => {
+        console.log('failed', error)
+      })
+  };
+
+  kakao_translate = async () => {
+    const headers = {
+      'Authorization': 'KakaoAK 731079cdb935d4c712f1225cce3c9c6b',
+    }
+    let param = {
+      src_lang: 'kr',
+      target_lang: 'en',
+      query: this.state.korean_text
+    }
+
+    axios.post("/v1/translation/translate", qs.stringify(param), { headers: headers })
+      .then(res => {
+        let english_text = res.data.translated_text;
+        let t="";
+        for(let i=0; i<english_text.length; i++){
+          t+=english_text[i]+" ";
+        }
+        this.setState({
+          k_translated_text: t,
         });
       }).catch(error => {
         console.log('failed', error)
@@ -104,6 +131,11 @@ class Translate extends Component {
             <Card>
               <CardBody>
                 구글번역<p />{this.state.g_translated_text}
+              </CardBody>
+            </Card>
+            <Card>
+              <CardBody>
+                카카오번역<p />{this.state.k_translated_text}
               </CardBody>
             </Card>
             <Link to={{
