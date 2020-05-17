@@ -2,8 +2,8 @@
   "name": "neverland-web",
   "version": "2.6.0",
   "main": "index.js",
-  "description": "Neverland Webpage",
-  "author": "Potion, Miral",
+  "description": "Lafuta Translation",
+  "author": "Jongun Kim, Jeesu Jung",
   "homepage": "https://coreui.io",
   "copyright": "Copyright 2017-2019 creativeLabs Łukasz Holeczek",
   "license": "MIT",
@@ -28,6 +28,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
+    "http-proxy-middleware": "^1.0.3",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "node-sass": "^4.14.1",
@@ -57,7 +58,6 @@
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
   },
-  "proxy":"https://openapi.naver.com",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
