@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link, BrowserRouter as Router, Route } from "react-router-dom";
 import Contribute from '../Contribute/Contribute';
+import google_icon from '../../assets/icon/google_icon.png'; 
+import kakao_icon from '../../assets/icon/kakao_icon.png'; 
+import papago_icon from '../../assets/icon/papago_icon.png'; 
 import axios from "axios";
 import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
 const qs = require('querystring')
@@ -12,7 +15,7 @@ const papago_headers = {
 }
 const google_headers = {
   'Content-type': 'application/json',
-  'Authorization': 'Bearer ' + "ya29.c.KpQB1gf_dpgunJnxheXSmfRR-byB4bdAi_x9n95nQrTCbUKvLDE2H903Vhk4dDA3gBy2ZjSYCHxQnwDZI_PYxWG818O03BnOBhvsv4ViNWRTnK52gUcI-DMHrlM856wtsM6sgwkgut1pwGqpop8-HE_OdO8CT2O_zkPUDNjVSDLCDgkSUIGBBGwk4-Z4kyb5Rpm_yi_yxg",
+  'Authorization': 'Bearer ' + "ya29.c.KpQB1gfh1XuF0GlficttCABlVZGlRSCf2Pkq9AS3N86Gki8Aa3DiCiRxEWHRhKdvNgoO3saZqlSQ6RXlyJr6Q6JiOBzeLsYI9pC9PF5fUFeeNPY6bzJyb1oLnH3LifbE1R_s_VWcvEWzq35F7nOuy3st86hYLWHxah61Se6VggwOSyIlYzPHjpT71utoCXOfFXW22jYb_g",
 }
 const kakao_headers = {
   'Authorization': 'KakaoAK 731079cdb935d4c712f1225cce3c9c6b',
@@ -157,9 +160,9 @@ class Translate extends Component {
               txt===""?<br></br>:(
               <ListGroup key={index}>
                 <ListGroupItem active tag="button" action>{txt}</ListGroupItem>
-                <ListGroupItem tag="button" action>{papago_result[index]}</ListGroupItem>
-                <ListGroupItem tag="button" action>{google_result[index]}</ListGroupItem>
-                <ListGroupItem tag="button" action>{kakao_result[index]}</ListGroupItem>
+                <ListGroupItem tag="button" action><img src={papago_icon} alt="papago"/>{papago_result[index]}</ListGroupItem>
+                <ListGroupItem tag="button" action><img src={google_icon} alt="google"/>{google_result[index]}</ListGroupItem>
+                <ListGroupItem tag="button" action><img src={kakao_icon} alt="kakao"/>{kakao_result[index]}</ListGroupItem>
               </ListGroup>
               )
             ))}
