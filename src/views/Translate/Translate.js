@@ -15,7 +15,7 @@ const papago_headers = {
 }
 const google_headers = {
   'Content-type': 'application/json',
-  'Authorization': 'Bearer ' + "ya29.c.KpQB1gfh1XuF0GlficttCABlVZGlRSCf2Pkq9AS3N86Gki8Aa3DiCiRxEWHRhKdvNgoO3saZqlSQ6RXlyJr6Q6JiOBzeLsYI9pC9PF5fUFeeNPY6bzJyb1oLnH3LifbE1R_s_VWcvEWzq35F7nOuy3st86hYLWHxah61Se6VggwOSyIlYzPHjpT71utoCXOfFXW22jYb_g",
+  'Authorization': 'Bearer ' + "ya29.c.KpQB1wfn5WQAcgx2wHEN8hy1SgHfNU_9lFy81eArMmCaAEUPNsluSSVR4IP0CghmYWjoFP2-Lvk3qvduDXbcmVDyAgLq5nxZXW9y6TIXOwdey5gLSHDYnV4y9oaaxDq24pvamojh-FJb5s3gIzm9QtHW7hCXPdcl3VuL0enrIuI7xT4eq8xHZZnojB34jDjvsQ5PAO490Q",
 }
 const kakao_headers = {
   'Authorization': 'KakaoAK 731079cdb935d4c712f1225cce3c9c6b',
@@ -25,10 +25,12 @@ class Translate extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      input_korean_text: "",
       korean_text: "",
       p_translated_text: [],
       g_translated_text: [],
       k_translated_text: [],
+      color: [],
       able_submit: false
     };
     this.handleClick = this.handleClick.bind(this);
@@ -36,7 +38,7 @@ class Translate extends Component {
 
   handleChange = (e) => {
     this.setState({
-      korean_text: e.target.value
+      input_korean_text: e.target.value
     })
   };
 
@@ -44,9 +46,8 @@ class Translate extends Component {
     this.setState({
       able_submit: true,
     });
-    console.log(this.state.p_translated_text)
-    // this.makeResultCard(splitKor)
-    this.setState({
+    await this.setState({
+      korean_text: this.state.input_korean_text,
       p_translated_text: [],
       g_translated_text: [],
       k_translated_text: []
@@ -57,15 +58,18 @@ class Translate extends Component {
   };
 
   handleSubmit = (e) => {
-    // this.setState({
-    //   p_translated_text: this.state.korean_text,
-    // });
+    this.setState({
+      p_translated_text: this.state.korean_text,
+    });
   }
 
   papago_translate = async () => {
     let splitKor = (this.state.korean_text + " ").split(". ");
     let papago_result = []
     for (let i = 0; i < splitKor.length; i++) {
+      if(splitKor[i]===""){
+        continue;
+      }
       let param = {
         source: 'ko',
         target: 'en',
@@ -88,6 +92,9 @@ class Translate extends Component {
     let splitKor = (this.state.korean_text + " ").split(". ");
     let google_result = []
     for (let i = 0; i < splitKor.length; i++) {
+      if(splitKor[i]===""){
+        continue;
+      }
       let param = {
         source: 'ko',
         target: 'en',
@@ -112,6 +119,9 @@ class Translate extends Component {
     let splitKor = (this.state.korean_text + " ").split(". ");
     let kakao_result = []
     for (let i = 0; i < splitKor.length; i++) {
+      if(splitKor[i]===""){
+        continue;
+      }
       let param = {
         src_lang: 'kr',
         target_lang: 'en',
@@ -135,18 +145,23 @@ class Translate extends Component {
   
   };
 
+  test(index, arg){
+    console.log(index);
+    console.log(arg);
+  }
+
   makeResultCard() {
     let splitKor = (this.state.korean_text + " ").split(". ")
     let papago_result = this.state.p_translated_text
     let google_result = this.state.g_translated_text
     let kakao_result = this.state.k_translated_text
-    if (papago_result == undefined) {
+    if (papago_result === undefined) {
       papago_result = new Array(splitKor.length)
     }
-    if (google_result == undefined) {
+    if (google_result === undefined) {
       google_result = new Array(splitKor.length)
     }
-    if (kakao_result == undefined) {
+    if (kakao_result === undefined) {
       kakao_result = new Array(splitKor.length)
     }
     return (
@@ -157,12 +172,12 @@ class Translate extends Component {
           </CardHeader>
           <CardBody>
             {splitKor.map((txt, index) => (
-              txt===""?<br></br>:(
+              txt===""?<br key={index}/>:(
               <ListGroup key={index}>
-                <ListGroupItem active tag="button" action>{txt}</ListGroupItem>
-                <ListGroupItem tag="button" action><img src={papago_icon} alt="papago"/>{papago_result[index]}</ListGroupItem>
-                <ListGroupItem tag="button" action><img src={google_icon} alt="google"/>{google_result[index]}</ListGroupItem>
-                <ListGroupItem tag="button" action><img src={kakao_icon} alt="kakao"/>{kakao_result[index]}</ListGroupItem>
+                <ListGroupItem key="0" active tag="button" action>{txt}</ListGroupItem>
+                <ListGroupItem key="1" tag="button" action color="success" onClick={()=>this.test(index, 1)}><img src={papago_icon} alt="papago"/>{papago_result[index]}</ListGroupItem>
+                <ListGroupItem key="2" tag="button" action color="false" onClick={()=>this.test(index, 2)}><img src={google_icon} alt="google"/>{google_result[index]}</ListGroupItem>
+                <ListGroupItem key="3" tag="button" action color="false" onClick={()=>this.test(index, 3)}><img src={kakao_icon} alt="kakao"/>{kakao_result[index]}</ListGroupItem>
               </ListGroup>
               )
             ))}
@@ -177,7 +192,7 @@ class Translate extends Component {
       <div>
         <Row>
           <Col>
-            <Input type="textarea" value={this.state.korean_text}
+            <Input type="textarea" value={this.state.input_korean_text}
               onChange={this.handleChange} rows="9" />
             <Button onClick={this.handleClick}>Translate</Button>
           </Col>
