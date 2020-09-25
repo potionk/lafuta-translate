@@ -28,9 +28,9 @@ class Translate extends Component {
       input_korean_text: "",
       korean_text: "",
       select_text: [["", "", ""]],
-      p_translated_text: [],
-      g_translated_text: [],
-      k_translated_text: [],
+      p_translated_text: [""],
+      g_translated_text: [""],
+      k_translated_text: [""],
       user_translate: [""],
       color: [],
       able_submit: false
@@ -72,7 +72,7 @@ class Translate extends Component {
       let len=this.state.input_korean_text.split(". ").length;
       // console.log(len)
       await this.setState({ // await없을 시 translate 메소드 실행 시 인자가 빠져 들어갈 수 있어 에러가 날 가능성이 있음.
-        korean_text: this.state.input_korean_text,
+        korean_text: this.state.input_korean_text.trim(),
         select_text: this.make2DArray(len),
         p_translated_text: [],
         g_translated_text: [],
@@ -214,6 +214,28 @@ class Translate extends Component {
     alert("복사 완료!");
   }
 
+  copy_this(index, translator){
+    let target="";
+    switch(translator){
+      case 0:
+        target=this.state.p_translated_text[index];
+        break;
+      case 1:
+        target=this.state.g_translated_text[index];
+        break;
+      case 2:
+        target=this.state.k_translated_text[index];
+        break;
+    }
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = target;
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+    alert("복사 완료!");
+  }
+
   makeResultCard() {
     let splitKor = (this.state.korean_text + " ").split(". ")
     let papago_result = this.state.p_translated_text
@@ -239,9 +261,9 @@ class Translate extends Component {
               txt === "" ? <br key={index} /> : (
                 <ListGroup key={index}>
                   <ListGroupItem key="0" active tag="button" action>{txt}</ListGroupItem>
-                  <ListGroupItem key="1" tag="button" action color={this.state.select_text[index][0]} onClick={() => this.highlight(index, 0)}><img src={papago_icon} alt="papago" />{papago_result[index]}</ListGroupItem>
-                  <ListGroupItem key="2" tag="button" action color={this.state.select_text[index][1]} onClick={() => this.highlight(index, 1)}><img src={google_icon} alt="google" />{google_result[index]}</ListGroupItem>
-                  <ListGroupItem key="3" tag="button" action color={this.state.select_text[index][2]} onClick={() => this.highlight(index, 2)}><img src={kakao_icon} alt="kakao" />{kakao_result[index]}</ListGroupItem>
+                  <ListGroupItem key="1" tag="button" action color={this.state.select_text[index][0]} onClick={() => this.highlight(index, 0)} onDoubleClick={() => this.copy_this(index, 0)}><img src={papago_icon} alt="papago" />{papago_result[index]}</ListGroupItem>
+                  <ListGroupItem key="2" tag="button" action color={this.state.select_text[index][1]} onClick={() => this.highlight(index, 1)} onDoubleClick={() => this.copy_this(index, 1)}><img src={google_icon} alt="google" />{google_result[index]}</ListGroupItem>
+                  <ListGroupItem key="3" tag="button" action color={this.state.select_text[index][2]} onClick={() => this.highlight(index, 2)} onDoubleClick={() => this.copy_this(index, 2)}><img src={kakao_icon} alt="kakao" />{kakao_result[index]}</ListGroupItem>
                   <ListGroupItem key="4" tag="button" action color={this.state.select_text[index][3]} onClick={() => this.highlight(index, 3)}><img src={pencil_icon} alt="user" />
                     <Input type="textarea" value={this.state.user_translate[index]} data-index={index} onChange={this.handleChangeU} rows="1" />
                   </ListGroupItem>
