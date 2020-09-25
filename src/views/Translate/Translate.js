@@ -4,7 +4,8 @@ import kakao_icon from '../../assets/icon/kakao_icon.png';
 import papago_icon from '../../assets/icon/papago_icon.png';
 import axios from "axios";
 import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
-const qs = require('querystring')
+const qs = require('querystring');
+
 const papago_headers = {
   'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
   'Accept': '*/*',
@@ -13,7 +14,7 @@ const papago_headers = {
 }
 const google_headers = {
   'Content-type': 'application/json',
-  'Authorization': 'Bearer ya29.c.KpQB1wdbkhsHtr7_tkA3wLHzrStpdAhwh5Q0BdK_1Dmwb7lrZ2Igysoo1ZTmn3nPHLCu4XOrbmIwF8oYe_zThLNNifr5DWgZVgf6Q3b0oy03ntyfUiODneLdiX_0MLYNHdaXIp9nzRQVmpBvzVfAW6trO9RpbappZDtv6O2pRpsm_LYWzVAJbANX25nUfdJTZXvb3kNxeA',
+  'Authorization': 'Bearer ya29.c.KpQB1wd-rDmH7jD1BIlHM0OIoBpfhq0Btjvs1w2I3lQhzmU58yuZ2MV8ChcvhNOy3zYbU9Sf_Nyc4_kmVjtsqSOsVSK0rU1pT1alxHq-yADvG0ebvRbSo8TmIgf5CpQ6yZrt-0p1vW2T7ocU4dZOrQsxuO1kcAwB6Lu4UzguRRHlE65KEX-pFN2P3hpf4XMNmdXoafhxYw',
 }
 const kakao_headers = {
   'Authorization': 'KakaoAK 731079cdb935d4c712f1225cce3c9c6b',
@@ -45,7 +46,7 @@ class Translate extends Component {
     var arr = new Array(num);
     for (var i = 0; i < num; i++) {
       arr[i] = new Array(3);
-      arr[i][0] = "success";
+      arr[i][0] = "success"; // success가 해당 블럭 색칠하는 attribute의 값이 됨
     }
     return arr;
   }
@@ -61,9 +62,8 @@ class Translate extends Component {
       g_translated_text: [],
       k_translated_text: []
     });
-    console.log(this.state.select_text)
     this.papago_translate();
-    this.google_translate();
+    // this.google_translate();
     this.kakao_translate();
   };
 
@@ -166,6 +166,33 @@ class Translate extends Component {
     });
   }
 
+  copy_result(){
+    let get_select_text = this.state.select_text;
+    let get_p_translated_text = this.state.p_translated_text;
+    let get_g_translated_text = this.state.g_translated_text;
+    let get_k_translated_text = this.state.k_translated_text;
+    let result="";
+    for(let i=0; i<get_select_text.length; i++){
+      if(get_select_text[i][0]=="success"){
+        result+=get_p_translated_text[i];
+      } else if (get_select_text[i][1]=="success"){
+        result+=get_g_translated_text[i];
+      } else if (get_select_text[i][2]=="success"){
+        result+=get_k_translated_text[i];
+      }
+      if(i!=get_select_text.length-1){
+        result+=" ";
+      }
+    }
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = result;
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+    alert("복사 완료!");
+  }
+
   makeResultCard() {
     let splitKor = (this.state.korean_text + " ").split(". ")
     let papago_result = this.state.p_translated_text
@@ -199,6 +226,7 @@ class Translate extends Component {
             ))}
           </CardBody>
         </Card>
+        <Button onClick={() => this.copy_result()}>클립보드에 복사</Button>
       </Col>
     )
   }
