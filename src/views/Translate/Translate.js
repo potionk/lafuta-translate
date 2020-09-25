@@ -63,21 +63,26 @@ class Translate extends Component {
   }
 
   handleClick = async (e) => {
-    this.setState({
-      able_submit: true,
-    });
-    let len=this.state.input_korean_text.split(". ").length;
-    await this.setState({
-      korean_text: this.state.input_korean_text,
-      select_text: this.make2DArray(len),
-      p_translated_text: [],
-      g_translated_text: [],
-      k_translated_text: [],
-      user_translate: new Array(len),
-    });
-    this.papago_translate();
-    // this.google_translate();
-    this.kakao_translate();
+    if(this.state.input_korean_text.trim()===""){
+      alert("내용을 입력해주세요.");
+    } else {
+      this.setState({
+        able_submit: true,
+      });
+      let len=this.state.input_korean_text.split(". ").length;
+      // console.log(len)
+      await this.setState({ // await없을 시 translate 메소드 실행 시 인자가 빠져 들어갈 수 있어 에러가 날 가능성이 있음.
+        korean_text: this.state.input_korean_text,
+        select_text: this.make2DArray(len),
+        p_translated_text: [],
+        g_translated_text: [],
+        k_translated_text: [],
+        user_translate: new Array(len),
+      });
+      this.papago_translate();
+      // this.google_translate();
+      this.kakao_translate();
+    }
   };
 
   handleSubmit = (e) => {
