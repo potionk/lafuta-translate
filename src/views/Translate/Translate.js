@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import google_icon from '../../assets/icon/google_icon.png';
 import kakao_icon from '../../assets/icon/kakao_icon.png';
 import papago_icon from '../../assets/icon/papago_icon.png';
+import pencil_icon from '../../assets/icon/pencil_icon.png';
 import axios from "axios";
 import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
 const qs = require('querystring');
@@ -30,6 +31,7 @@ class Translate extends Component {
       p_translated_text: [],
       g_translated_text: [],
       k_translated_text: [],
+      user_translate: [""],
       color: [],
       able_submit: false
     };
@@ -42,10 +44,19 @@ class Translate extends Component {
     })
   };
 
+  handleChangeU = (e) => {
+    let get_user_translate = this.state.user_translate;
+    get_user_translate[e.target.dataset.index] = e.target.value;
+    this.setState({
+      user_translate: get_user_translate,
+    });
+    console.log(this.state.user_translate)
+  };
+
   make2DArray(num) {
     var arr = new Array(num);
     for (var i = 0; i < num; i++) {
-      arr[i] = new Array(3);
+      arr[i] = new Array(4);
       arr[i][0] = "success"; // success가 해당 블럭 색칠하는 attribute의 값이 됨
     }
     return arr;
@@ -55,12 +66,14 @@ class Translate extends Component {
     this.setState({
       able_submit: true,
     });
+    let len=this.state.input_korean_text.split(". ").length;
     await this.setState({
       korean_text: this.state.input_korean_text,
-      select_text: this.make2DArray(this.state.input_korean_text.split(". ").length),
+      select_text: this.make2DArray(len),
       p_translated_text: [],
       g_translated_text: [],
-      k_translated_text: []
+      k_translated_text: [],
+      user_translate: new Array(len),
     });
     this.papago_translate();
     // this.google_translate();
@@ -157,7 +170,7 @@ class Translate extends Component {
 
   highlight(index, arg) {
     let get_select_text = this.state.select_text;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       get_select_text[index][i] = "";
     }
     get_select_text[index][arg] = "success";
@@ -171,6 +184,7 @@ class Translate extends Component {
     let get_p_translated_text = this.state.p_translated_text;
     let get_g_translated_text = this.state.g_translated_text;
     let get_k_translated_text = this.state.k_translated_text;
+    let get_user_translate = this.state.user_translate;
     let result="";
     for(let i=0; i<get_select_text.length; i++){
       if(get_select_text[i][0]=="success"){
@@ -179,6 +193,8 @@ class Translate extends Component {
         result+=get_g_translated_text[i];
       } else if (get_select_text[i][2]=="success"){
         result+=get_k_translated_text[i];
+      } else if (get_select_text[i][3]=="success"){
+        result+=get_user_translate[i];
       }
       if(i!=get_select_text.length-1){
         result+=" ";
@@ -221,6 +237,9 @@ class Translate extends Component {
                   <ListGroupItem key="1" tag="button" action color={this.state.select_text[index][0]} onClick={() => this.highlight(index, 0)}><img src={papago_icon} alt="papago" />{papago_result[index]}</ListGroupItem>
                   <ListGroupItem key="2" tag="button" action color={this.state.select_text[index][1]} onClick={() => this.highlight(index, 1)}><img src={google_icon} alt="google" />{google_result[index]}</ListGroupItem>
                   <ListGroupItem key="3" tag="button" action color={this.state.select_text[index][2]} onClick={() => this.highlight(index, 2)}><img src={kakao_icon} alt="kakao" />{kakao_result[index]}</ListGroupItem>
+                  <ListGroupItem key="4" tag="button" action color={this.state.select_text[index][3]} onClick={() => this.highlight(index, 3)}><img src={pencil_icon} alt="user" />
+                    <Input type="textarea" value={this.state.user_translate[index]} data-index={index} onChange={this.handleChangeU} rows="1" />
+                  </ListGroupItem>
                 </ListGroup>
               )
             ))}
