@@ -117,7 +117,7 @@ class Translate extends Component {
     let splitKor = (this.state.korean_text + " ").split(". ");
     let google_result = []
     let key = ""
-    await axios.get("http://localhost:3001/translate/get_key")
+    await axios.get("/translate/get_key") // proxy 설정하여 서버의 주소로 돌리거나 http://localhost:(port num)/translate/get_key 로 사용
       .then(res => {
         key = res.data.key;
       }).catch(error => {
