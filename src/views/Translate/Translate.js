@@ -13,10 +13,7 @@ const papago_headers = {
   'X-Naver-Client-Id': '48do5KkeVQYZBNxkJGUt',
   'X-Naver-Client-Secret': 'vIXAEug1_8'
 }
-const google_headers = {
-  'Content-type': 'application/json',
-  'Authorization': 'Bearer ya29.c.KpQB1wd-rDmH7jD1BIlHM0OIoBpfhq0Btjvs1w2I3lQhzmU58yuZ2MV8ChcvhNOy3zYbU9Sf_Nyc4_kmVjtsqSOsVSK0rU1pT1alxHq-yADvG0ebvRbSo8TmIgf5CpQ6yZrt-0p1vW2T7ocU4dZOrQsxuO1kcAwB6Lu4UzguRRHlE65KEX-pFN2P3hpf4XMNmdXoafhxYw',
-}
+
 const kakao_headers = {
   'Authorization': 'KakaoAK 731079cdb935d4c712f1225cce3c9c6b',
 }
@@ -63,13 +60,13 @@ class Translate extends Component {
   }
 
   handleClick = async (e) => {
-    if(this.state.input_korean_text.trim()===""){
+    if (this.state.input_korean_text.trim() === "") {
       alert("내용을 입력해주세요.");
     } else {
       this.setState({
         able_submit: true,
       });
-      let len=this.state.input_korean_text.split(". ").length;
+      let len = this.state.input_korean_text.split(". ").length;
       // console.log(len)
       await this.setState({ // await없을 시 translate 메소드 실행 시 인자가 빠져 들어갈 수 있어 에러가 날 가능성이 있음.
         korean_text: this.state.input_korean_text.trim(),
@@ -80,7 +77,7 @@ class Translate extends Component {
         user_translate: new Array(len),
       });
       this.papago_translate();
-      // this.google_translate();
+      this.google_translate();
       this.kakao_translate();
     }
   };
@@ -119,6 +116,17 @@ class Translate extends Component {
   google_translate = async () => {
     let splitKor = (this.state.korean_text + " ").split(". ");
     let google_result = []
+    let key = ""
+    await axios.get("http://localhost:3001/translate/get_key")
+      .then(res => {
+        key = res.data.key;
+      }).catch(error => {
+        console.log('failed', error)
+      })
+    let google_headers = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + key,
+    }
     for (let i = 0; i < splitKor.length; i++) {
       if (splitKor[i] === "") {
         continue;
@@ -184,25 +192,25 @@ class Translate extends Component {
     });
   }
 
-  copy_result(){
+  copy_result() {
     let get_select_text = this.state.select_text;
     let get_p_translated_text = this.state.p_translated_text;
     let get_g_translated_text = this.state.g_translated_text;
     let get_k_translated_text = this.state.k_translated_text;
     let get_user_translate = this.state.user_translate;
-    let result="";
-    for(let i=0; i<get_select_text.length; i++){
-      if(get_select_text[i][0]=="success"){
-        result+=get_p_translated_text[i];
-      } else if (get_select_text[i][1]=="success"){
-        result+=get_g_translated_text[i];
-      } else if (get_select_text[i][2]=="success"){
-        result+=get_k_translated_text[i];
-      } else if (get_select_text[i][3]=="success"){
-        result+=get_user_translate[i];
+    let result = "";
+    for (let i = 0; i < get_select_text.length; i++) {
+      if (get_select_text[i][0] === "success") {
+        result += get_p_translated_text[i];
+      } else if (get_select_text[i][1] === "success") {
+        result += get_g_translated_text[i];
+      } else if (get_select_text[i][2] === "success") {
+        result += get_k_translated_text[i];
+      } else if (get_select_text[i][3] === "success") {
+        result += get_user_translate[i];
       }
-      if(i!=get_select_text.length-1){
-        result+=" ";
+      if (i !== get_select_text.length - 1) {
+        result += " ";
       }
     }
     var t = document.createElement("textarea");
@@ -214,18 +222,19 @@ class Translate extends Component {
     alert("복사 완료!");
   }
 
-  copy_this(index, translator){
-    let target="";
-    switch(translator){
+  copy_this(index, translator) {
+    let target = "";
+    switch (translator) {
       case 0:
-        target=this.state.p_translated_text[index];
+        target = this.state.p_translated_text[index];
         break;
       case 1:
-        target=this.state.g_translated_text[index];
+        target = this.state.g_translated_text[index];
         break;
       case 2:
-        target=this.state.k_translated_text[index];
+        target = this.state.k_translated_text[index];
         break;
+      default:
     }
     var t = document.createElement("textarea");
     document.body.appendChild(t);
