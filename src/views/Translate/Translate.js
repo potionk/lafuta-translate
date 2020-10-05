@@ -114,7 +114,12 @@ class Translate extends Component {
 
   google_translate = async () => {
     let key = "";
-    await fetch(google_key).then(res => res.text()).then(text => key = text);
+    await axios.get("/translate/get_key") // proxy 설정하여 서버의 주소로 돌리거나 http://localhost:(port num)/translate/get_key 로 사용
+      .then(res => {
+        key = res.data.key;
+      }).catch(error => {
+        console.log('failed', error)
+      })
     let splitKor = (this.state.korean_text + " ").split(". ");
     let google_result = [];
     let google_headers = {
