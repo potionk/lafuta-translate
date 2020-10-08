@@ -16,6 +16,11 @@ export default {
       icon: 'icon-bulb',
     },
     {
+      name: '데이터 수집 도우미',
+      url: '/assist',
+      icon: 'icon-compass',
+    },
+    {
       name: 'Community',
       url: '/community',
       icon: 'icon-note',
