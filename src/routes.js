@@ -39,10 +39,11 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 
-// Neverland web
+// translator
 const Home = React.lazy(() => import('./views/Home/Home'));
 const Translate = React.lazy(() => import('./views/Translate/Translate'));
 const Translate_web = React.lazy(() => import('./views/Translate/Translate_web'));
+const Assist = React.lazy(() => import('./views/Translate/Assist'));
 const Data_contribute = React.lazy(() => import('./views/Contribute/Contribute'));
 const Free = React.lazy(() => import('./views/Community/Free/Free'));
 const FreeBBS = React.lazy(() => import('./views/Community/Free/FreeBBS'));
@@ -50,11 +51,12 @@ const Write = React.lazy(() => import('./views/Community/Write'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  // Neverland web
+  // translator
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', exact: true, name: 'Home', component: Home },
   { path: '/translate', exact: true, name: 'Translate', component: Translate },
-  { path: '/translate_web', exact: true, name: 'Translate Web', component: Translate_web },
+  { path: '/translate_web', exact: true, name: 'Test', component: Translate_web },
+  { path: '/assist', exact: true, name: 'Assist', component: Assist },
   { path: '/contribute', exact: true, name: 'Data Contribute', component: Data_contribute },
   { path: '/community/free', exact: true, name: 'Free', component: Free },
   { path: '/community/free:id', exact: true, name: 'Free', component: Free },
