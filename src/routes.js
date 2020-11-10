@@ -42,7 +42,7 @@ const User = React.lazy(() => import('./views/Users/User'));
 // translator
 const Home = React.lazy(() => import('./views/Home/Home'));
 const Translate = React.lazy(() => import('./views/Translate/Translate'));
-const Translate_web = React.lazy(() => import('./views/Translate/Translate_web'));
+const Keyword_extractor = React.lazy(() => import('./views/Translate/Keyword_extractor'));
 const Assist = React.lazy(() => import('./views/Translate/Assist'));
 const Data_contribute = React.lazy(() => import('./views/Contribute/Contribute'));
 const Free = React.lazy(() => import('./views/Community/Free/Free'));
@@ -55,7 +55,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', exact: true, name: 'Home', component: Home },
   { path: '/translate', exact: true, name: 'Translate', component: Translate },
-  { path: '/translate_web', exact: true, name: 'Test', component: Translate_web },
+  { path: '/keyword_extractor', exact: true, name: 'Keyword_extractor', component: Keyword_extractor },
   { path: '/assist', exact: true, name: 'Assist', component: Assist },
   { path: '/contribute', exact: true, name: 'Data Contribute', component: Data_contribute },
   { path: '/community/free', exact: true, name: 'Free', component: Free },

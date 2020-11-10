@@ -30,6 +30,7 @@
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^1.0.3",
+    "keyword-extractor-korean": "^0.3.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "node-sass": "^4.14.1",

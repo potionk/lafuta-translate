@@ -10,11 +10,11 @@ export default {
       url: '/translate',
       icon: 'icon-bulb',
     },
-    // {
-    //   name: '웹번역',
-    //   url: '/translate_web',
-    //   icon: 'icon-bulb',
-    // },
+    {
+      name: '키워드 추출',
+      url: '/keyword_extractor',
+      icon: 'icon-bulb',
+    },
     {
       name: '데이터 수집 도우미',
       url: '/assist',
