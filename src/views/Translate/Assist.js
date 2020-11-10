@@ -62,8 +62,8 @@ class Translate extends Component {
   make2DArray(num) {
     var arr = new Array(num);
     for (var i = 0; i < num; i++) {
-      arr[i] = new Array(5);
-      arr[i][0] = "success"; // success가 해당 블럭 색칠하는 attribute의 값이 됨
+      arr[i] = new Array(5).fill("");
+      arr[i][3] = "success"; // success가 해당 블럭 색칠하는 attribute의 값이 됨
     }
     return arr;
   }
@@ -223,6 +223,7 @@ class Translate extends Component {
     let getInputEnglish = this.state.englishText.split(". ");
     let getUserTranslate = this.state.userTranslate;
     let result = "";
+    let getIsSameLength = this.state.isSameLength;
     for (let i = 0; i < getSelectText.length - 1; i++) {
       if (getSelectText[i][0] === "success") {
         result += getPapagoResult[i];
@@ -231,7 +232,11 @@ class Translate extends Component {
       } else if (getSelectText[i][2] === "success") {
         result += getKakaoResult[i];
       } else if (getSelectText[i][3] === "success") {
-        result += getInputEnglish[i];
+        if(getIsSameLength){
+          result += getInputEnglish[i];
+        } else {
+          result += getUserTranslate[i];
+        }
       } else if (getSelectText[i][4] === "success") {
         result += getUserTranslate[i];
       }
