@@ -3,7 +3,6 @@ import google_icon from '../../assets/icon/google_icon.png';
 import kakao_icon from '../../assets/icon/kakao_icon.png';
 import papago_icon from '../../assets/icon/papago_icon.png';
 import pencil_icon from '../../assets/icon/pencil_icon.png';
-import google_key from './google_key.txt';
 import axios from "axios";
 import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
 const qs = require('querystring');

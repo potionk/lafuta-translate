@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import { Button, Col, Input, Row, ListGroup, ListGroupItem } from 'reactstrap';
-import json_icon from '../../assets/icon/json_icon.png';
-var keyword = require("keyword-extractor-korean"),
-  extractor = keyword();
+import axios from "axios";
+import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
+const qs = require('querystring');
+
 
 class Keyword_extractor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      target:"",
-      resultJSON:""
+      inputText: "",
+      korean_text: "",
+      select_text: new Array(10).fill(""),
+      engResult: [""],
+      color: [],
     };
   };
 
   handleChange = (e) => {
-    let target=e.target.value;
     this.setState({
-      target: target
-    })
+      inputText: e.target.value
+    });
   };
+
 
   handleSubmit = (e) => {
     this.setState({
@@ -26,12 +29,57 @@ class Keyword_extractor extends Component {
     });
   }
 
+  extract = async () => {
+    let param = {
+      input: this.state.inputText
+    };
+    let engResult=[];
+    await axios.post("/translate/get_eng_extracted", qs.stringify(param))
+      .then(res => {
+        engResult = res.data.result.split("\n");
+      }).catch(error => {
+        console.log('failed', error);
+      })
+    this.setState({
+      engResult: engResult
+    });
+    console.log(engResult)
+  };
 
-  copy_this(index, translator) {
-    let target = this.state.resultJSON;
+  highlight(index) {
+    let get_select_text = this.state.select_text;
+    if(get_select_text[index] === ""){
+      get_select_text[index] = "success";
+    } else {
+      get_select_text[index] = "";
+    }
+    this.setState({
+      select_text: get_select_text,
+    });
+  }
+
+  copy_result() {
+    let getSelectText = this.state.select_text;
+    let getResult = this.state.engResult;
+    let result="";
+    for (let i = 0; i < getResult.length; i++) {
+      if (getSelectText[i] === "success") {
+        result += getResult[i]+", ";
+      }
+    }
     var t = document.createElement("textarea");
     document.body.appendChild(t);
-    t.value = target;
+    t.value = result.substring(0, result.length-2);
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+    alert("복사 완료!");
+  }
+
+  copy_this(index) {
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = this.state.engResult[index];
     t.select();
     document.execCommand('copy');
     document.body.removeChild(t);
@@ -39,30 +87,28 @@ class Keyword_extractor extends Component {
   }
 
   makeResultCard() {
+    let engResult = this.state.engResult;
+    let isInit = engResult.length===1&&engResult[0]===""?false:true;
     return (
       <Col>
-        <ListGroup>
-          <ListGroupItem key="0" active tag="button" action>result</ListGroupItem>
-          <ListGroupItem key="1" tag="button" action color="success" onDoubleClick={() => this.copy_this(0)}><img src={json_icon} alt="json" />{this.state.resultJSON}</ListGroupItem>
-        </ListGroup>
+        <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify"></i><strong>키워드 추출 결과</strong>
+          </CardHeader>
+          <CardBody>
+          <ListGroup>
+            {isInit?<ListGroupItem active action></ListGroupItem>:<br/>}
+            {engResult.map((txt, index) => (
+              txt === "" ? <br key={index} /> : (  
+                  <ListGroupItem key={index} tag="button" color={this.state.select_text[index]} action onClick={() => this.highlight(index)} onDoubleClick={() => this.copy_this(index)}>{txt}</ListGroupItem> 
+              )
+            ))}
+            </ListGroup>
+          </CardBody>
+        </Card>
+        <Button onClick={() => this.copy_result()}>클립보드에 복사</Button>
       </Col>
     )
-  }
-
-  extract(){
-    this.setState({
-      resultJSON: this.JSONtoString(extractor(this.state.target))
-    })
-  }
-
-  JSONtoString(object) {
-    var results = [];
-    for (var property in object) {
-      var value = object[property];
-      if (value)
-        results.push(property.toString() + ': ' + value);
-    }
-    return '{' + results.join(', ') + '}';
   }
 
   render() {
@@ -70,12 +116,12 @@ class Keyword_extractor extends Component {
       <div>
         <Row>
           <Col>
-            <Input type="textarea" value={this.state.input_korean_text}
-              onChange={this.handleChange} rows="9" />
-              <Button onClick={() => this.extract()}>Extract</Button>
+            <Input type="textarea" value={this.state.inputText} onChange={this.handleChange} rows="9" />
+            <br/>
+            <Button onClick={this.extract}>Extract</Button>
           </Col>
           <Col>
-            {this.makeResultCard(this.korean_text_list)}
+            {this.makeResultCard()}
           </Col>
         </Row>
       </div>
