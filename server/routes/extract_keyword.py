@@ -17,6 +17,7 @@ def main(input):
 
 if __name__ == '__main__':
     input = ""
-    for s in sys.argv:
-        input += s + " "
+    min_len, max_len, total_len = sys.argv[1:3]
+    for i in range(1, len(sys.argv)):
+        input += sys.argv[i] + " "
     main(input.rstrip())
