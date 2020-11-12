@@ -77,9 +77,9 @@ class Translate extends Component {
         l_translated_text: [],
         user_translate: new Array(len),
       });
-      // this.papago_translate();
-      // this.google_translate();
-      // this.kakao_translate();
+      this.papago_translate();
+      this.google_translate();
+      this.kakao_translate();
       this.lafuta_translate();
     }
   };
