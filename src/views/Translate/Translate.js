@@ -3,6 +3,7 @@ import google_icon from '../../assets/icon/google_icon.png';
 import kakao_icon from '../../assets/icon/kakao_icon.png';
 import papago_icon from '../../assets/icon/papago_icon.png';
 import pencil_icon from '../../assets/icon/pencil_icon.png';
+import lafuta_icon from '../../assets/icon/lafuta_icon.png';
 import axios from "axios";
 import { Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader } from 'reactstrap';
 const qs = require('querystring');
@@ -24,10 +25,11 @@ class Translate extends Component {
     this.state = {
       input_korean_text: "",
       korean_text: "",
-      select_text: [["", "", ""]],
+      select_text: [["", "", "", ""]],
       p_translated_text: [""],
       g_translated_text: [""],
       k_translated_text: [""],
+      l_translated_text: [""],
       user_translate: [""],
       color: [],
       able_submit: false
@@ -52,7 +54,7 @@ class Translate extends Component {
   make2DArray(num) {
     var arr = new Array(num);
     for (var i = 0; i < num; i++) {
-      arr[i] = new Array(4);
+      arr[i] = new Array(5);
       arr[i][0] = "success"; // success가 해당 블럭 색칠하는 attribute의 값이 됨
     }
     return arr;
@@ -72,11 +74,13 @@ class Translate extends Component {
         p_translated_text: [],
         g_translated_text: [],
         k_translated_text: [],
+        l_translated_text: [],
         user_translate: new Array(len),
       });
-      this.papago_translate();
-      this.google_translate();
-      this.kakao_translate();
+      // this.papago_translate();
+      // this.google_translate();
+      // this.kakao_translate();
+      this.lafuta_translate();
     }
   };
 
@@ -177,9 +181,32 @@ class Translate extends Component {
     });
   };
 
+  lafuta_translate = async () => {
+    let param = {
+      input: this.state.korean_text
+    };
+    let resultArr = [];
+    await axios.post("http://25.46.14.188:3001/translate/get_translated", qs.stringify(param), { headers: kakao_headers })
+      .then(res => {
+        resultArr = res.data.result.split("\r\n");
+        for (let i = 0; i < resultArr.length; i++) {
+          if (resultArr[i][resultArr.length - 1] !== ".") {
+            resultArr[i] += ".";
+          }
+        }
+      }).catch(error => {
+        console.log('failed', error);
+      })
+    this.setState({
+      l_translated_text: resultArr
+    });
+  };
+
+
+
   highlight(index, arg) {
     let get_select_text = this.state.select_text;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       get_select_text[index][i] = "";
     }
     get_select_text[index][arg] = "success";
@@ -193,6 +220,7 @@ class Translate extends Component {
     let get_p_translated_text = this.state.p_translated_text;
     let get_g_translated_text = this.state.g_translated_text;
     let get_k_translated_text = this.state.k_translated_text;
+    let get_l_translated_text = this.state.l_translated_text;
     let get_user_translate = this.state.user_translate;
     let result = "";
     for (let i = 0; i < get_select_text.length; i++) {
@@ -203,6 +231,8 @@ class Translate extends Component {
       } else if (get_select_text[i][2] === "success") {
         result += get_k_translated_text[i];
       } else if (get_select_text[i][3] === "success") {
+        result += get_l_translated_text[i];
+      } else if (get_select_text[i][4] === "success") {
         result += get_user_translate[i];
       }
       if (i !== get_select_text.length - 1) {
@@ -230,6 +260,9 @@ class Translate extends Component {
       case 2:
         target = this.state.k_translated_text[index];
         break;
+      case 3:
+        target = this.state.l_translated_text[index];
+        break;
       default:
     }
     var t = document.createElement("textarea");
@@ -246,6 +279,7 @@ class Translate extends Component {
     let papago_result = this.state.p_translated_text;
     let google_result = this.state.g_translated_text;
     let kakao_result = this.state.k_translated_text;
+    let lafuta_result = this.state.l_translated_text;
     if (papago_result === undefined) {
       papago_result = new Array(splitKor.length);
     }
@@ -254,6 +288,9 @@ class Translate extends Component {
     }
     if (kakao_result === undefined) {
       kakao_result = new Array(splitKor.length);
+    }
+    if (lafuta_result === undefined) {
+      lafuta_result = new Array(splitKor.length);
     }
     return (
       <Col>
@@ -269,7 +306,8 @@ class Translate extends Component {
                   <ListGroupItem key="1" tag="button" action color={this.state.select_text[index][0]} onClick={() => this.highlight(index, 0)} onDoubleClick={() => this.copy_this(index, 0)}><img src={papago_icon} alt="papago" />{papago_result[index]}</ListGroupItem>
                   <ListGroupItem key="2" tag="button" action color={this.state.select_text[index][1]} onClick={() => this.highlight(index, 1)} onDoubleClick={() => this.copy_this(index, 1)}><img src={google_icon} alt="google" />{google_result[index]}</ListGroupItem>
                   <ListGroupItem key="3" tag="button" action color={this.state.select_text[index][2]} onClick={() => this.highlight(index, 2)} onDoubleClick={() => this.copy_this(index, 2)}><img src={kakao_icon} alt="kakao" />{kakao_result[index]}</ListGroupItem>
-                  <ListGroupItem key="4" tag="button" action color={this.state.select_text[index][3]} onClick={() => this.highlight(index, 3)}><img src={pencil_icon} alt="user" />
+                  <ListGroupItem key="4" tag="button" action color={this.state.select_text[index][3]} onClick={() => this.highlight(index, 3)} onDoubleClick={() => this.copy_this(index, 2)}><img src={lafuta_icon} alt="lafuta" />{lafuta_result[index]}</ListGroupItem>
+                  <ListGroupItem key="5" tag="button" action color={this.state.select_text[index][4]} onClick={() => this.highlight(index, 4)}><img src={pencil_icon} alt="user" />
                     <Input type="textarea" value={this.state.user_translate[index]} data-index={index} onChange={this.handleChangeU} rows="1" />
                   </ListGroupItem>
                 </ListGroup>
