@@ -20,4 +20,4 @@ if __name__ == '__main__':
     min_len, max_len, size = sys.argv[1:4]
     for i in range(4, len(sys.argv)):
         input += sys.argv[i] + " "
-    main(min_len, max_len, size, input.rstrip())
+    main(int(min_len), int(max_len), int(size), input.rstrip())
