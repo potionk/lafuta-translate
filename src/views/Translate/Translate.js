@@ -5,7 +5,8 @@ import papago_icon from '../../assets/icon/papago_icon.png';
 import pencil_icon from '../../assets/icon/pencil_icon.png';
 import lafuta_icon from '../../assets/icon/lafuta_icon.png';
 import axios from "axios";
-import {Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader} from 'reactstrap';
+import {Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader.
+Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 
 const qs = require('querystring');
 
@@ -33,14 +34,51 @@ class Translate extends Component {
             l_translated_text: [""],
             user_translate: [""],
             color: [],
-            able_submit: false
+            able_submit: false,
+            modal: false,
+            search_url: ""
         };
         this.handleClick = this.handleClick.bind(this);
+        this.toggle = this.toggle.bind(this);
     };
 
     handleChange = (e) => {
         this.setState({
             input_korean_text: e.target.value
+        });
+    };
+
+    toggle() {
+        let get_select_text = this.state.select_text;
+        let get_p_translated_text = this.state.p_translated_text;
+        let get_g_translated_text = this.state.g_translated_text;
+        let get_k_translated_text = this.state.k_translated_text;
+        let get_l_translated_text = this.state.l_translated_text;
+        let get_user_translate = this.state.user_translate;
+        let result = "";
+        for (let i = 0; i < get_select_text.length; i++) {
+            if (get_select_text[i][0] === "success") {
+                result += get_p_translated_text[i];
+            } else if (get_select_text[i][1] === "success") {
+                result += get_g_translated_text[i];
+            } else if (get_select_text[i][2] === "success") {
+                result += get_k_translated_text[i];
+            } else if (get_select_text[i][3] === "success") {
+                result += get_l_translated_text[i];
+            } else if (get_select_text[i][4] === "success") {
+                result += get_user_translate[i];
+            }
+            if (i !== get_select_text.length - 1) {
+                result += " ";
+            }
+        }
+        if (result == ""){
+            alert("검색할 문장을 선택해주세요.")
+        }
+        
+        this.setState({
+          modal: !this.state.modal,
+          search_url: 'https://scholar.google.com/scholar?q=' + result
         });
     };
 
@@ -335,6 +373,19 @@ class Translate extends Component {
                     </CardBody>
                 </Card>
                 <Button onClick={() => this.copy_result()}>클립보드에 복사</Button>
+                
+                <Button onClick={this.toggle} className="mr-1">Launch demo modal</Button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} 
+                       className={'modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={this.toggle}>논문 검색 결과</ModalHeader>
+                  <ModalBody>
+                    <iframe src={this.state.search_url}>{this.state.search_url}</iframe>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
+                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
             </Col>
         )
     }
