@@ -17,7 +17,7 @@ def main(min_len, max_len, size, input):
 
 if __name__ == '__main__':
     input = ""
-    min_len, max_len, size = sys.argv[1:3]
+    min_len, max_len, size = sys.argv[1:4]
     for i in range(4, len(sys.argv)):
         input += sys.argv[i] + " "
     main(min_len, max_len, size, input.rstrip())
