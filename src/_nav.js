@@ -1,8 +1,8 @@
 export default {
   items: [
     {
-      name: 'Home',
-      url: '/home',
+      name: 'About',
+      url: '/about',
       icon: 'icon-home',
     },
     {

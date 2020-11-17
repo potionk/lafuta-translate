@@ -53,7 +53,7 @@ const Write = React.lazy(() => import('./views/Community/Write'));
 const routes = [
   // translator
   { path: '/', exact: true, name: 'Home' },
-  { path: '/home', exact: true, name: 'Home', component: Home },
+  { path: '/about', exact: true, name: 'About', component: Home },
   { path: '/translate', exact: true, name: 'Translate', component: Translate },
   { path: '/keyword_extractor', exact: true, name: 'Keyword_extractor', component: Keyword_extractor },
   { path: '/assist', exact: true, name: 'Assist', component: Assist },

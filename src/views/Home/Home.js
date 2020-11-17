@@ -1,108 +1,98 @@
-// import React, { Component } from 'react';
-// import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
+import React, { Component } from 'react';
+import google_icon from '../../assets/icon/google_icon.png';
+import kakao_icon from '../../assets/icon/kakao_icon.png';
+import papago_icon from '../../assets/icon/papago_icon.png';
+import lafuta_icon from '../../assets/icon/lafuta_icon.png';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
 
-// const items = [
-//   {
-//     src: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1607923e7e2%20text%20%7B%20fill%3A%23555%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1607923e7e2%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22285.9296875%22%20y%3D%22217.75625%22%3EFirst%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
-//     altText: 'Slide 1',
-//     caption: 'Slide 1',
-//   },
-//   {
-//     src: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa20%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa20%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3203125%22%20y%3D%22218.3%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
-//     altText: 'Slide 2',
-//     caption: 'Slide 2',
-//   },
-//   {
-//     src: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa21%20text%20%7B%20fill%3A%23333%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa21%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22277%22%20y%3D%22218.3%22%3EThird%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
-//     altText: 'Slide 3',
-//     caption: 'Slide 3',
-//   },
-// ];
-
-// class Home extends Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = { activeIndex: 0 };
-//     this.next = this.next.bind(this);
-//     this.previous = this.previous.bind(this);
-//     this.goToIndex = this.goToIndex.bind(this);
-//     this.onExiting = this.onExiting.bind(this);
-//     this.onExited = this.onExited.bind(this);
-//   }
-
-//   onExiting() {
-//     this.animating = true;
-//   }
-
-//   onExited() {
-//     this.animating = false;
-//   }
-
-//   next() {
-//     if (this.animating) return;
-//     const nextIndex = this.state.activeIndex === items.length - 1 ? 0 : this.state.activeIndex + 1;
-//     this.setState({ activeIndex: nextIndex });
-//   }
-
-//   previous() {
-//     if (this.animating) return;
-//     const nextIndex = this.state.activeIndex === 0 ? items.length - 1 : this.state.activeIndex - 1;
-//     this.setState({ activeIndex: nextIndex });
-//   }
-
-//   goToIndex(newIndex) {
-//     if (this.animating) return;
-//     this.setState({ activeIndex: newIndex });
-//   }
-
-//   render() {
-//     const { activeIndex } = this.state;
-
-//     const slides2 = items.map((item) => {
-//       return (
-//         <CarouselItem
-//           onExiting={this.onExiting}
-//           onExited={this.onExited}
-//           key={item.src}
-//         >
-//           <img className="d-block w-100" src={item.src} alt={item.altText} />
-//           <CarouselCaption captionText={item.caption} captionHeader={item.caption} />
-//         </CarouselItem>
-//       );
-//     });
-
-//     return (
-//       <div className="animated fadeIn">
-//         <Row>
-//           <Col xs="12" xl="6">
-//             <Card>
-//               <CardHeader>
-//                 <i className="fa fa-align-justify"></i><strong>대문</strong>
-//               </CardHeader>
-//               <CardBody>
-//                 <Carousel activeIndex={activeIndex} next={this.next} previous={this.previous}>
-//                   <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
-//                   {slides2}
-//                   <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
-//                   <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
-//                 </Carousel>
-//               </CardBody>
-//             </Card>
-//           </Col>
-//         </Row>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Home;
-
-import React, {Component} from 'react';
 
 class Home extends Component {
+  
+  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+
   render() {
-    return <div>Home</div>;
+    //developer info(GitHub)
+    //Translator info (w.image)
+    return (
+      <div>
+        <b>Translator information</b>
+        <Row>
+          <Col>
+          <Card>
+              <CardHeader>
+                <strong>4종 번역기 제공</strong>
+              </CardHeader>
+            <CardBody>
+              <div>
+                Lafuta Paper Translator Assistant는 한영 번역을 제공하는 논문 번역 도우미 웹입니다.<br />
+                아래의 4종의 번역 결과를 제공합니다.<br />
+                원하시는 번역 결과를 마음껏 편집, 이용하세요!<p />
+              </div>
+              <ListGroup>
+                <ListGroupItem>
+                  <img src={papago_icon} alt="papago"/> 네이버 파파고
+                </ListGroupItem>
+                <ListGroupItem>
+                  <img src={google_icon} alt="google"/> 구글 번역기
+                </ListGroupItem>
+                <ListGroupItem>
+                  <img src={kakao_icon} alt="kakao"/> 카카오 번역기
+                </ListGroupItem>
+                <ListGroupItem>
+                  <img src={lafuta_icon} alt="lafuta"/> Lafuta 자체 논문 번역기
+                </ListGroupItem>
+              </ListGroup>
+            </CardBody>
+          </Card>
+          </Col>
+        </Row>
+
+
+        <b>Developer information</b>
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <strong>김종운</strong>
+              </CardHeader>
+              <CardBody>
+                <div>
+                  충남대학교 컴퓨터공학과 졸업예정<br />
+                  Chungnam National University a bachelor's degree due<br />
+                  Web Developer for this project<p />
+                  <a href="https://github.com/potionk">GitHub link</a>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col>
+            <Card>
+              <CardHeader>
+                <strong>정지수</strong>
+              </CardHeader>
+              <CardBody>
+                <div>
+                  충남대학교 컴퓨터공학과 졸업예정<br />
+                  Chungnam National University a bachelor's degree due<br />
+                  Frontend, NMT Developer for this project<p />
+                  
+                  <a href="https://github.com/Jeesu-Jung">GitHub link</a>
+                </div>
+              </CardBody>
+            </Card>
+            
+          </Col>
+        </Row>
+      </div>
+    );
   }
 }
 
