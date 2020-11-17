@@ -55,7 +55,7 @@ class Keyword_extractor extends Component {
     extract = async () => {
         let isArgsValidate = this.state.isArgsValidate;
         for (let i = 0; i < 3; i++) {
-            if (isArgsValidate[i]) {
+            if (!isArgsValidate[i]) {
                 alert("입력값을 확인해주세요.");
                 return;
             }
