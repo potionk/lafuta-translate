@@ -6,6 +6,9 @@ import pencil_icon from '../../assets/icon/pencil_icon.png';
 import lafuta_icon from '../../assets/icon/lafuta_icon.png';
 import axios from "axios";
 import {Button, Col, Input, Row, Card, CardBody, ListGroup, ListGroupItem, CardHeader} from 'reactstrap';
+import Iframe from 'react-iframe'
+
+require('./style.css');
 
 const qs = require('querystring');
 
@@ -33,9 +36,21 @@ class Translate extends Component {
             l_translated_text: [""],
             user_translate: [""],
             color: [],
-            able_submit: false
+            able_submit: false,
+            modalShow: false,
+            searchQuery: "",
+            modalHeight: "200px"
         };
         this.handleClick = this.handleClick.bind(this);
+    };
+
+    showModal = () => {
+        console.log("hello")
+        this.setState({modalShow: true});
+    };
+
+    hideModal = () => {
+        this.setState({modalShow: false});
     };
 
     handleChange = (e) => {
@@ -81,7 +96,7 @@ class Translate extends Component {
             this.papago_translate();
             this.google_translate();
             this.kakao_translate();
-            this.lafuta_translate();
+            // this.lafuta_translate();
         }
     };
 
@@ -274,6 +289,31 @@ class Translate extends Component {
         alert("복사 완료!");
     }
 
+    googleSearch(index, translator) {
+        this.showModal()
+        let target = "";
+        switch (translator) {
+            case 0:
+                target = this.state.p_translated_text[index];
+                break;
+            case 1:
+                target = this.state.g_translated_text[index];
+                break;
+            case 2:
+                target = this.state.k_translated_text[index];
+                break;
+            case 3:
+                target = this.state.l_translated_text[index];
+                break;
+            case 4:
+                target = this.state.user_translate[index];
+                break;
+            default:
+        }
+        // eslint-disable-next-line no-restricted-globals
+        this.setState({searchQuery: target, modalHeight:window.innerHeight*0.6});
+    }
+
     makeResultCard() {
         let splitKor = (this.state.korean_text + " ").split(". ");
         let papago_result = this.state.p_translated_text;
@@ -305,27 +345,37 @@ class Translate extends Component {
                                     <ListGroupItem key="0" active tag="button" action>{txt}</ListGroupItem>
                                     <ListGroupItem key="1" tag="button" action color={this.state.select_text[index][0]}
                                                    onClick={() => this.highlight(index, 0)}
-                                                   onDoubleClick={() => this.copy_this(index, 0)}><img src={papago_icon}
-                                                                                                       alt="papago"/>{papago_result[index]}
+                                                   onDoubleClick={() => this.copy_this(index, 0)}
+                                                   draggable="true"
+                                                   onDragEnd={() => this.googleSearch(index, 0)}><img src={papago_icon}
+                                                                                                      alt="papago"/>{papago_result[index]}
                                     </ListGroupItem>
                                     <ListGroupItem key="2" tag="button" action color={this.state.select_text[index][1]}
                                                    onClick={() => this.highlight(index, 1)}
-                                                   onDoubleClick={() => this.copy_this(index, 1)}><img src={google_icon}
-                                                                                                       alt="google"/>{google_result[index]}
+                                                   onDoubleClick={() => this.copy_this(index, 1)}
+                                                   draggable="true"
+                                                   onDragEnd={() => this.googleSearch(index, 1)}><img src={google_icon}
+                                                                                                      alt="google"/>{google_result[index]}
                                     </ListGroupItem>
                                     <ListGroupItem key="3" tag="button" action color={this.state.select_text[index][2]}
                                                    onClick={() => this.highlight(index, 2)}
-                                                   onDoubleClick={() => this.copy_this(index, 2)}><img src={kakao_icon}
-                                                                                                       alt="kakao"/>{kakao_result[index]}
+                                                   onDoubleClick={() => this.copy_this(index, 2)}
+                                                   draggable="true"
+                                                   onDragEnd={() => this.googleSearch(index, 2)}><img src={kakao_icon}
+                                                                                                      alt="kakao"/>{kakao_result[index]}
                                     </ListGroupItem>
                                     <ListGroupItem key="4" tag="button" action color={this.state.select_text[index][3]}
                                                    onClick={() => this.highlight(index, 3)}
-                                                   onDoubleClick={() => this.copy_this(index, 2)}><img src={lafuta_icon}
-                                                                                                       alt="lafuta"/>{lafuta_result[index]}
+                                                   onDoubleClick={() => this.copy_this(index, 2)}
+                                                   draggable="true"
+                                                   onDragEnd={() => this.googleSearch(index, 3)}><img src={lafuta_icon}
+                                                                                                      alt="lafuta"/>{lafuta_result[index]}
                                     </ListGroupItem>
                                     <ListGroupItem key="5" tag="button" action color={this.state.select_text[index][4]}
-                                                   onClick={() => this.highlight(index, 4)}><img src={pencil_icon}
-                                                                                                 alt="user"/>
+                                                   onClick={() => this.highlight(index, 4)}
+                                                   draggable="true"
+                                                   onDragEnd={() => this.googleSearch(index, 4)}><img src={pencil_icon}
+                                                                                                      alt="user"/>
                                         <Input type="textarea" value={this.state.user_translate[index]}
                                                data-index={index} onChange={this.handleChangeU} rows="1"/>
                                     </ListGroupItem>
@@ -343,6 +393,22 @@ class Translate extends Component {
         return (
             <div>
                 <Row>
+                    <Modal show={this.state.modalShow} handleClose={this.hideModal}>
+                        <Card height="100%">
+                            <CardHeader>
+                                Google Search Result &nbsp;&nbsp;&nbsp;
+                                <button align="right" onClick={this.hideModal}>Close</button>
+                            </CardHeader>
+                            <CardBody height="100%">
+                                <Iframe
+                                    url={"https://www.google.com/search?igu=1&q=" + this.state.searchQuery}
+                                    width="100%"
+                                    height={this.state.modalHeight}
+                                    align="center"
+                                    display="initial"/>
+                            </CardBody>
+                        </Card>
+                    </Modal>
                     <Col>
                         <Input type="textarea" value={this.state.input_korean_text}
                                onChange={this.handleChange} rows="9"/>
@@ -356,5 +422,16 @@ class Translate extends Component {
         );
     }
 }
+
+const Modal = ({show, children}) => {
+    const showHideClassName = show ? "modal display-block" : "modal display-none";
+    return (
+        <div className={showHideClassName}>
+            <section className="modal-main">
+                {children}
+            </section>
+        </div>
+    );
+};
 
 export default Translate;
