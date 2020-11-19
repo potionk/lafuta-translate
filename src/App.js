@@ -23,7 +23,7 @@ class App extends Component {
               <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/tools" name="Tools" render={props => <Tools {...props}/>} />
-              <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
+              <Route path="/" name="About" render={props => <DefaultLayout {...props}/>} />
             </Switch>
           </React.Suspense>
       </HashRouter>

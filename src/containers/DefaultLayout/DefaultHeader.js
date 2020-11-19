@@ -34,7 +34,7 @@ class DefaultHeader extends Component {
 
         <Nav className="d-md-down-none" navbar>
         <NavItem className="px-3">
-            <NavLink to="/about" className="nav-link" >About</NavLink>
+            <NavLink to="/about" className="nav-link" >Lafuta Paper Translator Assistant</NavLink>
           </NavItem>
           {/* <NavItem className="px-3">
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
