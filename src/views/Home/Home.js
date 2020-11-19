@@ -30,73 +30,73 @@ class Home extends Component {
 };
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
-
   render() {
     //developer info(GitHub)
     //Translator info (w.image)
     return (
       <div>
-        <b>Service</b>
+        <h3>Service</h3>
+        <p />
         <Row>
           <Col>
             <Card>
               <CardHeader>
-                01. 번역 결과 취합 제공
+                <b>01. 번역 결과 취합 제공</b>
               </CardHeader>
               <CardBody>
-                    <img src={translation_page} width="400" height="300"  alt="translation_page"/><br />
+                    <img src={translation_page} width="440" height="300"  alt="translation_page"/><p />
                     4종의 번역 결과를 한 눈에 볼 수 있습니다.<br />
                     이를 이용하여 간단하게 번역 및 편집이 가능합니다.<br />
               </CardBody>
             </Card>
-          </Col>
-          <Col>
+            </Col>
+            <Col>
             <Card>
               <CardHeader>
-                02. 키워드 추출
+                <b>02. 키워드 추출</b>
               </CardHeader>
               <CardBody>
-                    <img src={keyword_page} width="400" height="300"  alt="keyword_page"/><br />
+                    <img src={keyword_page} width="440" height="300"  alt="keyword_page"/><p />
                     영문 문단에서 키워드를 추출합니다.<br />
                     이를 이용하여 원하는 개수와 길이의 키워드를 추출할 수 있습니다.<br />
               </CardBody>
             </Card>
           </Col>
-          
-          <Col>
+          </Row>
+          <Row>
+            <Col>
             <Card>
               <CardHeader>
-                03. 쉬운 검색
+                <b>03. 쉬운 검색</b>
               </CardHeader>
               <CardBody>
-                    <img src={search_page} width="400" height="300"  alt="search_page"/><br />
+                    <img src={search_page} width="440" height="300"  alt="search_page"/><p />
                     번역한 문장에 대해 검색할 수 있습니다.<br />
                     원하는 문장을 살짝 당기면 구글 검색으로 이어집니다.<br />
               </CardBody>
             </Card>
-          </Col>
-          
-          <Col>
+            </Col>
+            <Col>
             <Card>
               <CardHeader>
-                04. 데이터 피드백
+                <b>04. 데이터 피드백</b>
               </CardHeader>
               <CardBody>
-                    <img src={feedback_page} width="400" height="300"  alt="feedback_page"/><br />
+                    <img src={feedback_page} width="440" height="300"  alt="feedback_page"/><p />
                     원하는 문장이 없을 시, 번역 모델의 발전을 위해 기여해주세요.<br />
                     번역 제공 페이지처럼, 편집 후 제출해주면 데이터에 반영됩니다.<br />
               </CardBody>
             </Card>
-          </Col>
+            </Col>
         </Row>
 
 
-        <b>Translator information</b>
+        <h3>Translator information</h3>
         <Row>
           <Col>
           <Card>
               <CardHeader>
-                <strong>4종 번역기 제공</strong>
+                <b>4종 번역기 제공</b>
               </CardHeader>
             <CardBody>
               <div>
@@ -123,7 +123,7 @@ class Home extends Component {
           </Col>
         </Row>
 
-        <b>Developer information</b>
+        <h3>Developer information</h3>
         <Row>
           <Col>
             <Card>
